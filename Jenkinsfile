@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        dotnetsdk 'dotnet-9'
+    }
+
     stages {
         stage('Build') {
             steps {

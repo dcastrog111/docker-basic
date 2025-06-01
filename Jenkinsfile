@@ -7,6 +7,18 @@ pipeline {
     }
 
     stages{
+        stage('Check versions'){
+            steps {
+                script {
+                    echo 'Node.js version:'
+                    sh 'node -v'
+                    echo 'NPM version:'
+                    sh 'npm -v'
+                    echo 'Dotnet version:'
+                    sh 'dotnet --version'
+                }
+            }
+        }
         stage('Restore'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {

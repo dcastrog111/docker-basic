@@ -19,7 +19,7 @@ pipeline {
                 }
             }
         }
-        stage('Restore'){
+        stage('Backend - Restore'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Restoring dependencies...'
@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        stage('Test'){
+        stage('Backend - Test'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Running tests...'
@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }
-        stage('Build'){
+        stage('Backend - Build'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Building the project...'
@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        stage('Publish'){
+        stage('Backend - Publish'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Publishing the project...'
@@ -51,14 +51,15 @@ pipeline {
                 }
             }
         }
-        stage('Nodejs version'){
+        stage('Frontend - Install'){
             steps {
-                script {
-                    sh 'node -v'
-                    sh 'npm -v'
+                dir('10-net9-remix-pg-env/Frontend') {
+                    echo 'Installing dependencies...'
+                    sh 'npm install'
                 }
             }
         }
+        
     }
     
     post {

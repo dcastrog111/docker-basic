@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh '/usr/bin/dotnet --version'
+                sh 'dotnet --version'
                 // Add your build steps here
             }
         }

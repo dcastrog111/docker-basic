@@ -7,8 +7,9 @@ pipeline {
     }
 
     environment {
-        DOTNET_TOOLS = "${HOME}/.dotnet/tools"
-        PATH = "${PATH}:${DOTNET_TOOLS}"
+        
+        DOTNET_ROOT = "${env.PATH}:${tool 'dotnet-9'}/bin"
+        PATH = "${env.PATH}:${tool 'node-20'}/bin"
     }
 
     stages{
@@ -24,32 +25,12 @@ pipeline {
                 }
             }
         }
-
-        stage('Install SonarScanner') {
-            steps {
-                echo 'Installing dotnet-sonarscanner...'
-                sh '''
-                    dotnet tool install --global dotnet-sonarscanner || echo "Already installed"
-                '''
-            }
-        }
-        
+ 
         stage('Backend - Restore'){
             steps {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Restoring dependencies...'
                     sh 'dotnet restore'
-                }
-            }
-        }
-        stage('Backend - Static Analysis'){
-            steps {
-                dir('10-net9-remix-pg-env/Backend') {
-                    echo 'Running static analysis...'
-                    sh 'export PATH="$PATH:$HOME/.dotnet/tools"'
-                    sh 'dotnet sonarscanner begin /k:"Docker-Basic" /d:sonar.host.url="http://192.168.67.129/:9000" /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
-                    sh 'dotnet build'
-                    sh 'dotnet sonarscanner end /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
                 }
             }
         }

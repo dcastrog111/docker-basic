@@ -8,7 +8,7 @@ pipeline {
     stages{
         stage('Restore'){
             steps {
-                dir('10-net9-remix-pg-env') {
+                dir('10-net9-remix-pg-env/Backend') {
                     echo 'Restoring dependencies...'
                     sh 'dotnet restore'
                 }

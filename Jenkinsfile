@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         dotnetsdk 'dotnet-9'
+        nodejs 'node-20'
     }
 
     stages{
@@ -35,6 +36,14 @@ pipeline {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Publishing the project...'
                     sh 'dotnet publish --configuration Release --no-build -o ./publish'
+                }
+            }
+        }
+        stage('Nodejs version'){
+            steps {
+                script {
+                    sh 'node -v'
+                    sh 'npm -v'
                 }
             }
         }

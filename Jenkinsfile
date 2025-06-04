@@ -8,8 +8,6 @@ pipeline {
 
     environment {
         
-        DOTNET_ROOT = "${env.PATH}:${tool 'dotnet-9'}/bin"
-        PATH = "${env.PATH}:${tool 'node-20'}/bin"
     }
 
     stages{
@@ -22,6 +20,10 @@ pipeline {
                     sh 'npm -v'
                     echo 'Dotnet version:'
                     sh 'dotnet --version'
+                    echo 'Current PATH:'
+                    sh 'echo $PATH'
+                    sh 'dotnet tool list --global || echo "No dotnet global tools listed or command failed."'
+                    sh 'ls -la $HOME/.dotnet/tools || echo "$HOME/.dotnet/tools not found."'
                 }
             }
         }
@@ -39,10 +41,10 @@ pipeline {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Running static analysis...'
                     withSonarQubeEnv('SonarQube') {
-                        withEnv(['PATH+DOTNET="$PATH:$HOME/.dotnet/tools"']) {
-                            sh 'dotnet sonarscanner begin /k:"Docker-Basic" /d:sonar.host.url="http://192.168.67.129/:9000" /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
+                        withEnv(["PATH+DOTNET_TOOLS=${env.HOME}/.dotnet/tools"]) {
+                            sh 'dotnet sonarscanner begin /k:"Docker-Basic" /d:sonar.host.url="http://192.168.67.129:9000" /d:sonar.login="${SONAR_AUTH_TOKEN}"'
                             sh 'dotnet build'
-                            sh 'dotnet sonarscanner end /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
+                            sh 'dotnet sonarscanner end /d:sonar.login="${SONAR_AUTH_TOKEN}"'
                         }
                     }
                 }

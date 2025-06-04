@@ -6,10 +6,6 @@ pipeline {
         nodejs 'node-20'
     }
 
-    environment {
-        
-    }
-
     stages{
         stage('Check versions'){
             steps {

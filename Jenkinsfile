@@ -42,23 +42,25 @@ pipeline {
                 dir('10-net9-remix-pg-env/Backend') {
                     echo 'Running static analysis...'
                     withSonarQubeEnv('SonarQube') {
-                        def dotnetSdkToolPath = tool 'dotnet-9'
-                        
-                        withEnv([
-                            "PATH+DOTNET_TOOLS=${env.HOME}/.dotnet/tools",
-                            "DOTNET_ROOT=${dotnetSdkToolPath}"
-                        ]) {
-                            echo "--- Environment for SonarScanner ---"
-                            sh 'echo "DOTNET_ROOT is now: $DOTNET_ROOT"'
-                            sh 'echo "PATH is now: $PATH"'
-                            sh 'which dotnet'
-                            sh 'dotnet --version' // Verificar versión de dotnet en este contexto
-                            sh 'dotnet --list-runtimes'
-                            echo "--- End Environment for SonarScanner ---"
+                        script{
+                            def dotnetSdkToolPath = tool 'dotnet-9'
                             
-                            sh 'dotnet sonarscanner begin /k:"Docker-Basic" /d:sonar.host.url="http://192.168.67.129:9000" /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
-                            sh 'dotnet build'
-                            sh 'dotnet sonarscanner end /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
+                            withEnv([
+                                "PATH+DOTNET_TOOLS=${env.HOME}/.dotnet/tools",
+                                "DOTNET_ROOT=${dotnetSdkToolPath}"
+                            ]) {
+                                echo "--- Environment for SonarScanner ---"
+                                sh 'echo "DOTNET_ROOT is now: $DOTNET_ROOT"'
+                                sh 'echo "PATH is now: $PATH"'
+                                sh 'which dotnet'
+                                sh 'dotnet --version' // Verificar versión de dotnet en este contexto
+                                sh 'dotnet --list-runtimes'
+                                echo "--- End Environment for SonarScanner ---"
+                                
+                                sh 'dotnet sonarscanner begin /k:"Docker-Basic" /d:sonar.host.url="http://192.168.67.129:9000" /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
+                                sh 'dotnet build'
+                                sh 'dotnet sonarscanner end /d:sonar.login="squ_1af08e6da05e5db1d4682685c630e06dd0f3da64"'
+                            }
                         }
                     }
                 }

@@ -24,7 +24,7 @@ pipeline {
                     sh 'dotnet --list-runtimes' // Ver qué runtimes ve el 'dotnet' global
                     
                     sh 'dotnet tool list --global || echo "No dotnet global tools listed or command failed."'
-                    sh 'ls -la ${env.HOME}/.dotnet/tools || echo "${env.HOME}/.dotnet/tools not found."'
+                    sh 'ls -la $HOME/.dotnet/tools || echo "$HOME/.dotnet/tools not found."'
                 }
             }
         }

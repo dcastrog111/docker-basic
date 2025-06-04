@@ -24,16 +24,7 @@ pipeline {
                     sh 'dotnet --list-runtimes' // Ver qué runtimes ve el 'dotnet' global
                     
                     sh 'dotnet tool list --global || echo "No dotnet global tools listed or command failed."'
-                    sh 'ls -la ${env.HOME}/.dotnet/tools || echo "${env.HOME}/.dotnet/tools not found."''
-                }
-            }
-        }
- 
-        stage('Backend - Restore'){
-            steps {
-                dir('10-net9-remix-pg-env/Backend') {
-                    echo 'Restoring dependencies...'
-                    sh 'dotnet restore'
+                    sh 'ls -la ${env.HOME}/.dotnet/tools || echo "${env.HOME}/.dotnet/tools not found."'
                 }
             }
         }
